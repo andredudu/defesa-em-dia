@@ -12,6 +12,7 @@ https://andredudu.github.io/defesa-em-dia/
 
 - [Página inicial](https://andredudu.github.io/defesa-em-dia/)
 - [Gerador](https://andredudu.github.io/defesa-em-dia/app.html)
+- [Privacidade](https://andredudu.github.io/defesa-em-dia/privacidade.html)
 
 ## Rodar localmente
 

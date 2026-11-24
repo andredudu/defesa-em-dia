@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests">
   <title>Montar defesa — Defesa em Dia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,16 +18,17 @@
       <span class="tag">Gerador de defesa (MVP)</span>
       <nav>
         <a href="index.html">Página inicial</a>
-        <a href="https://wa.me/5519982203472">WhatsApp</a>
+        <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </nav>
     </div>
   </header>
-  <main class="wrap-wide" style="padding-top:32px;padding-bottom:48px;">
+  <main class="wrap-wide pagina-app">
     <h1>Montar uma defesa</h1>
     <p class="sub">Preencha o que existir. Deixe em branco o que não tiver — o gerador marca a pendência e <strong>não inventa</strong> prazo, prova ou fato. Não cole número completo de cartão, CVV nem validade.</p>
-    <p class="aviso">Isto não é aconselhamento jurídico e não garante que o banco aceite a disputa. O prazo que vale é o da sua notificação, mesmo quando a página oficial do adquirente diz outra coisa. Os dados preenchidos aqui ficam no seu navegador e não são enviados a um servidor.</p>
+    <p class="aviso">Isto não é aconselhamento jurídico e não garante que o banco aceite a disputa. O prazo que vale é o da sua notificação, mesmo quando a página oficial do adquirente diz outra coisa. Os dados preenchidos aqui ficam no seu navegador e não são enviados a um servidor. Leia o <a href="privacidade.html">aviso de privacidade</a>.</p>
+    <noscript><p class="aviso">O gerador precisa do JavaScript ligado no seu navegador. Nada é enviado a um servidor; o script só monta a carta nesta página.</p></noscript>
 
-    <form id="formulario">
+    <form id="formulario" method="post" action="app.html" autocomplete="off">
       <h2>Quem e onde protocolar</h2>
       <div class="grid-2">
         <div class="campo">
@@ -180,82 +183,12 @@
     </section>
   </main>
   <footer class="rodape">
-    <div class="wrap-wide">Defesa em Dia · MVP operacional · não é aconselhamento jurídico e não garante reversão.</div>
+    <div class="wrap-wide">
+      Defesa em Dia · MVP operacional · não é aconselhamento jurídico e não garante reversão.
+      <p class="links-rodape"><a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp (19) 98220-3472</a></p>
+    </div>
   </footer>
   <script src="generate.js"></script>
-  <script>
-    const form = document.getElementById("formulario");
-    const botao = document.getElementById("gerar");
-    form.addEventListener("submit", (ev) => {
-      ev.preventDefault();
-      if (!window.DefesaEmDia || typeof DefesaEmDia.gerar !== "function") {
-        alert("Não foi possível carregar o gerador. Recarregue a página.");
-        return;
-      }
-      botao.disabled = true;
-      botao.textContent = "Gerando…";
-      try {
-        const dados = Object.fromEntries(new FormData(form).entries());
-        const json = DefesaEmDia.gerar(dados);
-        mostrar(json);
-      } catch (err) {
-        alert("Não foi possível gerar: " + err.message);
-      } finally {
-        botao.disabled = false;
-        botao.textContent = "Gerar carta, checklist e passos";
-      }
-    });
-
-    function li(ul, texto) {
-      const el = document.createElement("li");
-      el.textContent = texto;
-      ul.appendChild(el);
-    }
-    function preencherLista(id, itens, vazio) {
-      const ul = document.getElementById(id);
-      ul.innerHTML = "";
-      if (!itens || !itens.length) {
-        li(ul, vazio || "Nenhum.");
-        return;
-      }
-      itens.forEach((t) => li(ul, t));
-    }
-    function mostrar(r) {
-      const box = document.getElementById("resultado");
-      box.classList.remove("escondido");
-      const modo = document.getElementById("modo");
-      modo.textContent = "modelo fixo";
-      modo.className = "selo modelo";
-      document.getElementById("meta").textContent =
-        "Adquirente: " + (r.adquirente || "—") + " · Motivo tratado como: " + (r.tipoRotulo || "—") + ".";
-      document.getElementById("carta").textContent = r.carta || "";
-      const en = document.getElementById("bloco-en");
-      if (r.cartaIngles) {
-        en.classList.remove("escondido");
-        document.getElementById("cartaEn").textContent = r.cartaIngles;
-      } else {
-        en.classList.add("escondido");
-        document.getElementById("cartaEn").textContent = "";
-      }
-      const chk = r.checklist || {};
-      preencherLista("checklist", chk.itens);
-      preencherLista("jaTem", chk.jaTem, "Nada além do adquirente e do tipo.");
-      preencherLista("faltas", chk.faltas, "Nenhuma pendência automática — ainda assim revise o checklist.");
-      preencherLista("passos", r.passos);
-      preencherLista("avisos", r.avisos);
-      box.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    document.getElementById("copiar").addEventListener("click", async () => {
-      const t = document.getElementById("carta").textContent;
-      try {
-        await navigator.clipboard.writeText(t);
-        document.getElementById("copiar").textContent = "Carta copiada";
-        setTimeout(() => { document.getElementById("copiar").textContent = "Copiar carta"; }, 2000);
-      } catch {
-        alert("Não foi possível copiar automaticamente. Selecione o texto da carta.");
-      }
-    });
-    document.getElementById("imprimir").addEventListener("click", () => window.print());
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

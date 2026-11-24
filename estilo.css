@@ -89,6 +89,8 @@ li { margin: 0.4rem 0; }
   margin: 16px 0;
 }
 .preco { font-size: 2rem; font-family: var(--fonte-titulo); color: var(--navy); }
+.preco-periodo { font-size: 1rem; font-family: var(--fonte-corpo); font-weight: 400; }
+.pagina-app { padding-top: 32px; padding-bottom: 48px; }
 .aviso, .disclaimer {
   font-size: 0.92rem;
   color: #3F3A36;
@@ -103,6 +105,9 @@ footer.rodape {
   font-size: 0.9rem;
   color: #4A453F;
 }
+footer.rodape a { color: inherit; }
+footer.rodape a:hover { color: var(--navy); }
+.links-rodape { margin-top: 8px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
 label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 4px; }
 input, select, textarea {
