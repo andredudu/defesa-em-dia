@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; media-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
-  <title>Montar defesa — Defesa em Dia</title>
+  <title>Gerador de defesa e calculadora de prazo — Defesa em Dia</title>
+  <meta name="description" content="Gerador gratuito de carta de defesa de chargeback, calculadora de prazo por adquirente, lembrete .ics, checklist de provas e passos no portal. Roda no navegador.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="stylesheet" href="estilo.css">
@@ -13,20 +14,71 @@
 </head>
 <body>
   <header class="top">
-    <div class="wrap-wide">
+    <div class="wrap-wide barra">
       <a class="marca" href="index.html">Defesa em Dia</a>
-      <span class="tag">Gerador de defesa (MVP)</span>
+      <span class="tag">Gerador de defesa e calculadora de prazo</span>
       <nav>
-        <a href="index.html">Página inicial</a>
+        <a href="index.html">Início</a>
+        <a href="prevencao.html">Prevenção</a>
+        <a href="o-que-e-chargeback.html">Guias</a>
         <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </nav>
     </div>
   </header>
   <main class="wrap-wide pagina-app">
-    <h1>Montar uma defesa</h1>
+    <h1>Montar uma defesa e conferir o prazo</h1>
     <p class="sub">Preencha o que existir. Deixe em branco o que não tiver — o gerador marca a pendência e <strong>não inventa</strong> prazo, prova ou fato. Não cole número completo de cartão, CVV nem validade.</p>
     <p class="aviso">Isto não é aconselhamento jurídico e não garante que o banco aceite a disputa. O prazo que vale é o da sua notificação, mesmo quando a página oficial do adquirente diz outra coisa. Os dados preenchidos aqui ficam no seu navegador e não são enviados a um servidor. Leia o <a href="privacidade.html">aviso de privacidade</a>.</p>
-    <noscript><p class="aviso">O gerador precisa do JavaScript ligado no seu navegador. Nada é enviado a um servidor; o script só monta a carta nesta página.</p></noscript>
+    <noscript><p class="aviso">O gerador e a calculadora precisam do JavaScript ligado no seu navegador. Nada é enviado a um servidor; tudo roda localmente nesta página.</p></noscript>
+
+    <section id="calculadora-prazo" class="card calc-box no-print">
+      <h2>Calculadora de prazo e lembrete (.ics)</h2>
+      <p>Calcula a data-limite estimada a partir das regras públicas oficiais mapeadas em 23/11/2026 e gera um arquivo <code>.ics</code> para o seu calendário. <strong>Confira sempre na sua notificação — é a data dela que vale.</strong></p>
+      <div class="grid-2">
+        <div class="campo">
+          <label for="calc-adquirente">Adquirente</label>
+          <select id="calc-adquirente">
+            <option value="cielo">Cielo (FAQ 10 dias corridos; Braspag 7)</option>
+            <option value="stone" selected>Stone (10 dias corridos)</option>
+            <option value="mercadopago">Mercado Pago (páginas divergem: 7–10 corridos / 10 úteis)</option>
+            <option value="pagbank">PagBank / PagSeguro (sem dias fixos no guia)</option>
+            <option value="getnet">Getnet (12 dias corridos)</option>
+            <option value="pagarme">Pagar.me (10 dias corridos)</option>
+            <option value="rede">Rede (conferir notificação)</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="calc-data-notif">Data em que recebeu a notificação</label>
+          <input id="calc-data-notif" type="date">
+        </div>
+        <div class="campo">
+          <label for="calc-data-manual">Ou data-limite exata da notificação <span class="ajuda">Opcional. Obrigatório para PagBank/Rede ou se o aviso trouxer outra data.</span></label>
+          <input id="calc-data-manual" type="date">
+        </div>
+        <div class="campo">
+          <label for="calc-ident">Pedido ou ID do caso (opcional, para o calendário)</label>
+          <input id="calc-ident" type="text" placeholder="Ex.: Pedido #1042 / Stone ID">
+        </div>
+        <div class="campo">
+          <label for="calc-antecedencia">Alerta antecipado no calendário</label>
+          <select id="calc-antecedencia">
+            <option value="1">1 dia antes do prazo</option>
+            <option value="2" selected>2 dias antes do prazo</option>
+            <option value="3">3 dias antes do prazo</option>
+          </select>
+        </div>
+      </div>
+      <div class="acoes">
+        <button class="btn" type="button" id="calc-btn">Calcular prazo</button>
+        <button class="btn btn-sec" type="button" id="calc-usar" disabled>Usar data no formulário abaixo</button>
+        <button class="btn btn-sec" type="button" id="calc-ics" disabled>Baixar lembrete (.ics)</button>
+      </div>
+      <div id="calc-resultado" class="calc-resultado escondido">
+        <p class="prazo-destaque" id="calc-titulo"></p>
+        <p class="calc-nota escondido" id="calc-secundaria"></p>
+        <p class="calc-nota" id="calc-nota"></p>
+      </div>
+    </section>
 
     <form id="formulario" method="post" action="app.html" autocomplete="off">
       <h2>Quem e onde protocolar</h2>
@@ -185,10 +237,11 @@
   <footer class="rodape">
     <div class="wrap-wide">
       Defesa em Dia · MVP operacional · não é aconselhamento jurídico e não garante reversão.
-      <p class="links-rodape"><a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp (19) 98220-3472</a></p>
+      <p class="links-rodape"><a href="index.html">Início</a> · <a href="prevencao.html">Checklist de prevenção</a> · <a href="o-que-e-chargeback.html">Guias por adquirente</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp (19) 98220-3472</a></p>
     </div>
   </footer>
   <script src="generate.js"></script>
+  <script src="prazos.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

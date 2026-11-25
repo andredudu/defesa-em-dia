@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; media-src 'none'; manifest-src 'none'; upgrade-insecure-requests">
+  <title>Checklist de prevenção de chargeback — Defesa em Dia</title>
+  <meta name="description" content="Checklist gratuito para lojas virtuais fecharem as brechas mais comuns de fraude e desacordo comercial antes de receberem um chargeback.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="stylesheet" href="estilo.css">
+  <script src="framebust.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap barra">
+      <a class="marca" href="index.html">Defesa em Dia</a>
+      <span class="tag">Checklist gratuito de prevenção de chargeback</span>
+      <nav>
+        <a href="index.html">Início</a>
+        <a href="app.html">Montar uma defesa</a>
+        <a href="o-que-e-chargeback.html">Guias</a>
+        <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap pagina-app">
+    <h1>Checklist de prevenção de chargeback para loja virtual</h1>
+    <p class="sub">Uma lista prática com os pontos que os próprios adquirentes e bandeiras cobram na hora da disputa — para você evitar a contestação ou, se ela vier, já ter a prova pronta.</p>
+    <p class="aviso">Isto é um checklist operacional gratuito, não um serviço de antifraude e não garante zero chargebacks. A aprovação no antifraude do gateway também não transfere automaticamente o prejuízo para a plataforma (como a Stone esclarece em atendimento público). Se você já recebeu uma notificação, vá direto para a <a href="app.html#calculadora-prazo">calculadora de prazo e gerador de defesa</a>.</p>
+
+    <div class="card check-progresso no-print">
+      <span id="check-contador">0 itens marcados nesta sessão.</span>
+      <div class="acoes">
+        <button class="btn" type="button" id="check-imprimir">Imprimir / salvar PDF</button>
+        <button class="btn btn-sec" type="button" id="check-limpar">Limpar marcações</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>1. Checkout e pagamento (reduz fraude e “não reconheço”)</h2>
+      <ul class="check-grupo">
+        <li class="check-item">
+          <input type="checkbox" id="c1">
+          <label for="c1"><strong>Nome na fatura reconhecível:</strong> conferir no seu adquirente/gateway se o nome que aparece na fatura do cartão do cliente é o nome fantasia da sua loja (e não uma razão social desconhecida ou sigla aleatória).</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c2">
+          <label for="c2"><strong>3-D Secure (3DS) avaliado no adquirente:</strong> verificar com o suporte da sua plataforma/adquirente se a autenticação 3DS está disponível e ativa para pedidos de maior risco ou ticket alto.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c3">
+          <label for="c3"><strong>Registro técnico da compra:</strong> confirmar se sua plataforma/checkout guarda IP, data/hora e dados cadastrais do pedido (a Getnet cita IP, dispositivo e cadastro com senha entre as provas de fraude).</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c4">
+          <label for="c4"><strong>Divergência de titular, endereço e contato:</strong> em pedidos de valor mais alto, conferir se nome do comprador, CPF, telefone e endereço de entrega fazem sentido entre si — a Stone alerta para casos em que o nome do comprador difere do portador do cartão.</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>2. Anúncio, políticas e prova de aceite (evita desacordo comercial)</h2>
+      <ul class="check-grupo">
+        <li class="check-item">
+          <input type="checkbox" id="c5">
+          <label for="c5"><strong>Descrição e fotos fiéis ao produto enviado:</strong> manter capturas ou histórico da página do produto na data da compra. Em código de desacordo (como Visa 13.3 / Mastercard 4853 / Elo 53), a descrição original é exigida.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c6">
+          <label for="c6"><strong>Política de troca, devolução e prazo visível antes de pagar:</strong> deixar as regras claras no site e no checkout (a Getnet pede política de cancelamento e troca apresentada no ato, com evidência de ciência).</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c7">
+          <label for="c7"><strong>Prazo de envio realista e avisos de atraso:</strong> informar o prazo total (separação + frete) e registrar por e-mail qualquer alteração. Atraso sem aviso costuma gerar contestação por “mercadoria não recebida”.</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>3. Entrega e comprovante válido (o ponto que mais derruba defesa)</h2>
+      <ul class="check-grupo">
+        <li class="check-item">
+          <input type="checkbox" id="c8">
+          <label for="c8"><strong>Rastreio completo + comprovante assinado em pedidos relevantes:</strong> priorizar modalidade com rastreio completo até a entrega e, nos pedidos mais caros, AR assinado ou comprovante de recebimento com nome e documento legíveis.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c9">
+          <label for="c9"><strong>Conferir as regras do Mercado Pago se vender por lá:</strong> para o Programa de Proteção ao Vendedor, os Correios têm exigência diferente até R$ 450 e acima de R$ 450; transportadora pede DACTe + NF/DANFE + rastreio ou assinatura; entrega própria pede NF/DANFE assinada com nome e documento. Envios no Mercado Livre dispensam comprovante extra no programa.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c10">
+          <label for="c10"><strong>Evitar mudar endereço por WhatsApp sem formalização:</strong> entrega em endereço diferente do pedido ou retirada por terceiro sem autorização formal e documento enfraquece muito a defesa.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c11">
+          <label for="c11"><strong>Não depender só de print de conversa ou app de corrida:</strong> Mercado Pago informa que prints de redes sociais e histórico de motoristas de aplicativo não são aceitos como comprovante do programa; a Stone informa que prints de conversa não valem como documento principal.</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>4. Atendimento e estorno antes da disputa</h2>
+      <ul class="check-grupo">
+        <li class="check-item">
+          <input type="checkbox" id="c12">
+          <label for="c12"><strong>Canal visível de atendimento pós-venda:</strong> responder rápido pedidos de troca, dúvida de entrega e cancelamento reduz a chance de o comprador ligar direto para o banco.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c13">
+          <label for="c13"><strong>Estorno formal no painel do adquirente:</strong> se você já devolveu o dinheiro, faça pelo estorno oficial da plataforma e guarde o comprovante (não devolva por fora sem registro no pedido, salvo acordo claro e documentado).</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c14">
+          <label for="c14"><strong>Recorrência / assinatura com data de cancelamento registrada:</strong> se vende recorrência, registre data/hora exata do pedido de cancelamento para não cobrar após a solicitação.</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>5. Arquivo da loja (para responder em 10 dias se cair um caso)</h2>
+      <ul class="check-grupo">
+        <li class="check-item">
+          <input type="checkbox" id="c15">
+          <label for="c15"><strong>Guardar documentos por no mínimo 1 ano (e até 540 dias quando possível):</strong> a ajuda do Mercado Pago pede pelo menos 1 ano; Cielo, Stone e PagBank citam janelas de abertura pelo portador que podem chegar a 540 dias em certos casos.</label>
+        </li>
+        <li class="check-item">
+          <input type="checkbox" id="c16">
+          <label for="c16"><strong>Pasta organizada por número do pedido:</strong> ter fácil NF/DANFE em PDF, captura do rastreio entregue (não só o link, pois a Stone não aceita links), e-mail de confirmação e comprovante de entrega.</label>
+        </li>
+      </ul>
+    </div>
+
+    <h2>Já recebeu uma notificação de chargeback?</h2>
+    <p>Calcule o prazo limite, baixe o lembrete para o calendário e gere a carta e o checklist do seu adquirente gratuitamente no navegador — ou mande o aviso no WhatsApp para revisarmos com você no plano fundador.</p>
+    <div class="hero-acoes">
+      <a class="btn" href="app.html">Abrir calculadora de prazo e gerador</a>
+      <a class="btn btn-sec" href="https://wa.me/5519982203472?text=Ol%C3%A1%2C%20vi%20o%20checklist%20de%20preven%C3%A7%C3%A3o%20e%20quero%20tirar%20uma%20d%C3%BAvida%20sobre%20chargeback." target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
+    </div>
+
+    <p class="disclaimer">Baseado em páginas oficiais da Cielo, Stone, Mercado Pago, PagBank, Getnet, Pagar.me e Rede consultadas em 23/11/2026. Não é aconselhamento jurídico nem serviço de antifraude.</p>
+  </main>
+  <footer class="rodape">
+    <div class="wrap">
+      <strong>Defesa em Dia</strong> · apoio operacional a lojistas · não é aconselhamento jurídico<br>
+      <p class="links-rodape"><a href="index.html">Início</a> · <a href="app.html">Gerador e calculadora</a> · <a href="o-que-e-chargeback.html">Guias</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://wa.me/5519982203472" target="_blank" rel="noopener noreferrer">WhatsApp (19) 98220-3472</a></p>
+    </div>
+  </footer>
+  <script src="prevencao.js"></script>
+</body>
+</html>

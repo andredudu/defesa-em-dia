@@ -73,4 +73,115 @@
     }
   });
   document.getElementById("imprimir").addEventListener("click", () => window.print());
+
+  // Calculadora de prazo e lembrete (.ics)
+  const calcAdq = document.getElementById("calc-adquirente");
+  const calcNotif = document.getElementById("calc-data-notif");
+  const calcManual = document.getElementById("calc-data-manual");
+  const calcIdent = document.getElementById("calc-ident");
+  const calcAnt = document.getElementById("calc-antecedencia");
+  const calcBtn = document.getElementById("calc-btn");
+  const calcUsar = document.getElementById("calc-usar");
+  const calcIcs = document.getElementById("calc-ics");
+  const calcRes = document.getElementById("calc-resultado");
+  const calcTitulo = document.getElementById("calc-titulo");
+  const calcNota = document.getElementById("calc-nota");
+  const calcSec = document.getElementById("calc-secundaria");
+  let ultimoCalculo = null;
+
+  function executarCalculo() {
+    if (!window.DefesaEmDiaPrazos || !calcAdq || !calcRes) return;
+    const res = DefesaEmDiaPrazos.calcularPrazo({
+      adquirente: calcAdq.value,
+      dataNotificacao: calcNotif ? calcNotif.value : "",
+      dataManual: calcManual ? calcManual.value : ""
+    });
+    calcRes.classList.remove("escondido");
+    if (!res.ok) {
+      ultimoCalculo = null;
+      calcTitulo.textContent = res.semPrazoFixo
+        ? res.adquirenteNome + ": informe a data da notificação"
+        : "Preencha uma data para calcular";
+      calcNota.textContent = res.erro || "";
+      if (calcSec) {
+        calcSec.textContent = "";
+        calcSec.classList.add("escondido");
+      }
+      if (calcUsar) calcUsar.disabled = true;
+      if (calcIcs) calcIcs.disabled = true;
+      return;
+    }
+    ultimoCalculo = res;
+    if (res.origem === "manual") {
+      calcTitulo.textContent = "Prazo da notificação: " + res.dataLimiteBR;
+    } else if (res.adquirente === "mercadopago") {
+      calcTitulo.textContent = "Alerta preventivo (7 dias corridos): " + res.dataLimiteBR;
+    } else {
+      calcTitulo.textContent = "Data-limite estimada (" + res.diasUsados + " dias corridos): " + res.dataLimiteBR;
+    }
+    if (calcSec) {
+      if (res.dataSecundariaBR) {
+        calcSec.textContent = "Referência de 10 dias corridos: " + res.dataSecundariaBR + ". Na dúvida, siga a data escrita na notificação.";
+        calcSec.classList.remove("escondido");
+      } else {
+        calcSec.textContent = "";
+        calcSec.classList.add("escondido");
+      }
+    }
+    calcNota.textContent = res.nota + " Confira sempre na sua notificação — é ela que vale.";
+    if (calcUsar) calcUsar.disabled = false;
+    if (calcIcs) calcIcs.disabled = false;
+  }
+
+  if (calcBtn) {
+    calcBtn.addEventListener("click", executarCalculo);
+  }
+  [calcAdq, calcNotif, calcManual].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", () => {
+      if ((calcNotif && calcNotif.value) || (calcManual && calcManual.value)) {
+        executarCalculo();
+      }
+    });
+  });
+
+  if (calcUsar) {
+    calcUsar.addEventListener("click", () => {
+      if (!ultimoCalculo || !ultimoCalculo.ok) return;
+      const selectAdq = document.getElementById("adquirente");
+      const inputPrazo = document.getElementById("notificacaoPrazo");
+      if (selectAdq && ultimoCalculo.adquirente) {
+        selectAdq.value = ultimoCalculo.adquirente;
+      }
+      if (inputPrazo) {
+        inputPrazo.value = ultimoCalculo.textoFormulario;
+        inputPrazo.focus();
+      }
+    });
+  }
+
+  if (calcIcs) {
+    calcIcs.addEventListener("click", () => {
+      if (!ultimoCalculo || !ultimoCalculo.ok || !window.DefesaEmDiaPrazos) return;
+      try {
+        const ics = DefesaEmDiaPrazos.gerarICS({
+          dataLimiteISO: ultimoCalculo.dataLimiteISO,
+          adquirenteNome: ultimoCalculo.adquirenteNome,
+          identificacao: calcIdent ? calcIdent.value : "",
+          antecedenciaDias: calcAnt ? calcAnt.value : 2
+        });
+        const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "prazo-chargeback-" + ultimoCalculo.adquirente + ".ics";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (err) {
+        alert("Não foi possível gerar o arquivo .ics: " + err.message);
+      }
+    });
+  }
 })();
