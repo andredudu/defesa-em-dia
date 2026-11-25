@@ -31,6 +31,49 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+
+/* Fallbacks com métricas ajustadas para reduzir CLS enquanto as fontes carregam. */
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 92%;
+  ascent-override: 111.3%;
+  descent-override: 43.48%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Arial Bold"), local("Liberation Sans Bold"), local("Arial"), local("Liberation Sans");
+  size-adjust: 88.9%;
+  ascent-override: 115.18%;
+  descent-override: 44.99%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Source Serif 4 Fallback";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Times New Roman Bold"), local("Liberation Serif Bold"), local("Times New Roman"), local("Liberation Serif");
+  size-adjust: 105.45%;
+  ascent-override: 98.24%;
+  descent-override: 31.77%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Source Serif 4 Fallback";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Times New Roman Bold"), local("Liberation Serif Bold"), local("Times New Roman"), local("Liberation Serif");
+  size-adjust: 107.09%;
+  ascent-override: 96.74%;
+  descent-override: 31.28%;
+  line-gap-override: 0%;
+}
+
 :root {
   --navy: #12263A;
   --ink: #1C1917;
@@ -40,8 +83,8 @@
   --verde: #1F6F5B;
   --linha: #D9D1C4;
   --branco: #FFFFFF;
-  --fonte-titulo: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --fonte-corpo: "Source Sans 3", Arial, Helvetica, sans-serif;
+  --fonte-titulo: "Source Serif 4", "Source Serif 4 Fallback", Georgia, "Times New Roman", serif;
+  --fonte-corpo: "Source Sans 3", "Source Sans 3 Fallback", Arial, Helvetica, sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -90,7 +133,7 @@ h3 { font-size: 1.15rem; margin: 22px 0 8px; }
 .sub { font-size: 1.15rem; margin: 0 0 28px; max-width: 42rem; }
 .btn {
   display: inline-block;
-  background: var(--terra);
+  background: var(--terra-escuro);
   color: var(--branco);
   text-decoration: none;
   padding: 14px 22px;
@@ -102,7 +145,7 @@ h3 { font-size: 1.15rem; margin: 22px 0 8px; }
   min-height: 44px;
   text-align: center;
 }
-.btn:hover { background: var(--terra-escuro); color: var(--branco); }
+.btn:hover { background: var(--navy); color: var(--branco); }
 .btn-sec {
   background: transparent;
   color: var(--navy);
@@ -272,6 +315,24 @@ table.tabela th {
 }
 .check-item label strong { font-weight: 600; color: var(--navy); }
 .artigo-meta { font-size: 0.9rem; color: #5A534C; margin: -8px 0 20px; }
+
+
+:focus-visible {
+  outline: 3px solid var(--terra-escuro);
+  outline-offset: 3px;
+}
+header.top :focus-visible {
+  outline-color: #F6F1E8;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+}
+.hero-preco {
+  font-weight: 600;
+  color: var(--navy);
+  margin: -8px 0 20px;
+}
 
 @media (max-width: 700px) {
   .grid-2, .guias-lista { grid-template-columns: 1fr; }
